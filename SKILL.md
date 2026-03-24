@@ -9,7 +9,7 @@ description: >-
 license: MIT
 metadata:
   author: zning1994
-  version: "1.0.0"
+  version: "0.1.0"
 ---
 
 # autoresearch
