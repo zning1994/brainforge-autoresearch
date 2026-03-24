@@ -89,19 +89,30 @@ class LLMProvider(ABC):
 
     @staticmethod
     def _extract_text(resp: dict, provider_name: str) -> str:
-        """Extract text from Anthropic-style response, handling thinking blocks."""
+        """Extract text from Anthropic-style response, handling thinking blocks.
+
+        Models with extended thinking (MiniMax M2.7, Claude) return content like:
+          [{"type": "thinking", "thinking": "..."}, {"type": "text", "text": "..."}]
+        Sometimes thinking exhausts max_tokens and no text block exists.
+        """
         try:
             content = resp["content"]
-            # Find the text block (skip thinking/signature blocks)
+            # 1. Find explicit text block
             for block in content:
                 if isinstance(block, dict):
-                    if block.get("type") == "text" or ("text" in block and "thinking" not in block):
+                    if block.get("type") == "text" and "text" in block:
                         return block["text"]
-            # Fallback: if no explicit text block found, try first block with "text" key
+            # 2. Fallback: any block with a "text" key (not "thinking")
             for block in content:
-                if isinstance(block, dict) and "text" in block:
+                if isinstance(block, dict) and "text" in block and "thinking" not in block:
                     return block["text"]
-            raise KeyError("no text block found")
+            # 3. Last resort: if only thinking blocks exist (max_tokens exhausted),
+            #    return the thinking content so the caller gets *something*
+            for block in reversed(content):
+                if isinstance(block, dict) and "thinking" in block:
+                    _log_err(f"[{provider_name}] no text block, using thinking content as fallback")
+                    return block["thinking"]
+            raise KeyError("no text or thinking block found")
         except (KeyError, IndexError, TypeError) as exc:
             raise RuntimeError(
                 f"[{provider_name}] unexpected response shape: "
