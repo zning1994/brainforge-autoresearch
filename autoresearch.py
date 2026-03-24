@@ -87,6 +87,27 @@ class LLMProvider(ABC):
         # unreachable
         raise RuntimeError(f"[{self.name()}] exhausted retries")
 
+    @staticmethod
+    def _extract_text(resp: dict, provider_name: str) -> str:
+        """Extract text from Anthropic-style response, handling thinking blocks."""
+        try:
+            content = resp["content"]
+            # Find the text block (skip thinking/signature blocks)
+            for block in content:
+                if isinstance(block, dict):
+                    if block.get("type") == "text" or ("text" in block and "thinking" not in block):
+                        return block["text"]
+            # Fallback: if no explicit text block found, try first block with "text" key
+            for block in content:
+                if isinstance(block, dict) and "text" in block:
+                    return block["text"]
+            raise KeyError("no text block found")
+        except (KeyError, IndexError, TypeError) as exc:
+            raise RuntimeError(
+                f"[{provider_name}] unexpected response shape: "
+                f"{json.dumps(resp)[:500]}"
+            ) from exc
+
 
 class MiniMaxProvider(LLMProvider):
     """MiniMax via Anthropic-compatible messages endpoint."""
@@ -112,13 +133,7 @@ class MiniMaxProvider(LLMProvider):
         if system:
             body["system"] = system
         resp = self._http_post(self.URL, headers, body)
-        # Anthropic-style response: {"content": [{"type": "text", "text": "..."}]}
-        try:
-            return resp["content"][0]["text"]
-        except (KeyError, IndexError) as exc:
-            raise RuntimeError(
-                f"[minimax] unexpected response shape: {json.dumps(resp)[:500]}"
-            ) from exc
+        return self._extract_text(resp, "minimax")
 
 
 class OpenAIProvider(LLMProvider):
@@ -187,12 +202,7 @@ class AnthropicProvider(LLMProvider):
         if system:
             body["system"] = system
         resp = self._http_post(self.URL, headers, body)
-        try:
-            return resp["content"][0]["text"]
-        except (KeyError, IndexError) as exc:
-            raise RuntimeError(
-                f"[anthropic] unexpected response: {json.dumps(resp)[:500]}"
-            ) from exc
+        return self._extract_text(resp, "anthropic")
 
 
 def detect_provider(explicit: Optional[str] = None,
@@ -382,7 +392,7 @@ class EvalRunner:
         )
         try:
             resp = self.provider.call(system="", user=prompt,
-                                     temperature=0.0, max_tokens=16)
+                                     temperature=0.0, max_tokens=256)
             answer = resp.strip().upper()
             if "YES" in answer:
                 return True, "LLM judge: YES"
