@@ -6,6 +6,7 @@ __pycache__/
 *.log
 .DS_Store
 node_modules/
+output/
 
 # autoresearch output (don't commit test runs)
 autoresearch-*/
