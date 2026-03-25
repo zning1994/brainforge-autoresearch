@@ -6,10 +6,23 @@ description: >-
   "run autoresearch", "tune prompt", "prompt optimization", "skill evaluation",
   "A/B test prompt", "find best prompt", "auto-improve skill".
   Runs automated prompt experiments using the Karpathy autoresearch pattern.
-license: MIT
+version: 0.2.0
 metadata:
   author: zning1994
-  version: "0.1.0"
+  openclaw:
+    requires:
+      env:
+        - MINIMAX_API_KEY
+        - OPENAI_API_KEY
+        - ANTHROPIC_API_KEY
+      anyBins:
+        - python3
+        - python
+    primaryEnv: OPENAI_API_KEY
+    homepage: https://github.com/zning1994/openclaw-autoresearch
+    os:
+      - macos
+      - linux
 ---
 
 # autoresearch
