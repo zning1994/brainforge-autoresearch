@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.3] - 2026-03-25
+
+### Added
+
+- `--timeout` CLI flag to control HTTP timeout per LLM call (default: 180s)
+  - Large prompts (e.g., 14KB style guides) need longer timeouts for mutation calls
+  - Previously hardcoded, now user-configurable
+
+### Changed
+
+- Default HTTP timeout increased from 60s to 180s (was causing mutation failures on Anthropic API with large prompts)
+- Timeout is now stored on the provider instance, passed through `detect_provider()`
+
 ## [0.2.2] - 2026-03-25
 
 ### Fixed
@@ -75,6 +88,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Example eval configs: `weekly-report.json`, `search-skill.json`
 - Compatible with `npx skills add` (Vercel Labs skills ecosystem)
 
+[0.2.3]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.3
 [0.2.2]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.2
 [0.2.1]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.1
 [0.2.0]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.0

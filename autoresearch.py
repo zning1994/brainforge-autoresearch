@@ -33,9 +33,10 @@ from typing import Any, Dict, List, Optional, Tuple
 class LLMProvider(ABC):
     """Base class for LLM API providers."""
 
-    def __init__(self, api_key: str, verbose: bool = False):
+    def __init__(self, api_key: str, verbose: bool = False, timeout: int = 180):
         self.api_key = api_key
         self.verbose = verbose
+        self.timeout = timeout
 
     @abstractmethod
     def name(self) -> str:
@@ -48,7 +49,9 @@ class LLMProvider(ABC):
         ...
 
     def _http_post(self, url: str, headers: dict, body: dict,
-                   timeout: int = 180) -> dict:
+                   timeout: int = 0) -> dict:
+        if timeout <= 0:
+            timeout = self.timeout
         """Low-level POST via urllib.  Retries once on timeout/5xx."""
         data = json.dumps(body).encode("utf-8")
         for attempt in range(2):
@@ -218,7 +221,8 @@ class AnthropicProvider(LLMProvider):
 
 def detect_provider(explicit: Optional[str] = None,
                     verbose: bool = False,
-                    model_override: Optional[str] = None) -> LLMProvider:
+                    model_override: Optional[str] = None,
+                    timeout: int = 180) -> LLMProvider:
     """Auto-detect or create the requested LLM provider."""
     provider: Optional[LLMProvider] = None
     if explicit:
@@ -233,7 +237,7 @@ def detect_provider(explicit: Optional[str] = None,
         key = os.environ.get(env_var)
         if not key:
             _die(f"Provider '{explicit}' requires {env_var} environment variable")
-        provider = cls(key, verbose=verbose)
+        provider = cls(key, verbose=verbose, timeout=timeout)
     else:
         # Auto-detect in priority order
         for env_var, cls in [
@@ -244,7 +248,7 @@ def detect_provider(explicit: Optional[str] = None,
             key = os.environ.get(env_var)
             if key:
                 _log(f"Auto-detected provider: {cls.__name__} (via {env_var})")
-                provider = cls(key, verbose=verbose)
+                provider = cls(key, verbose=verbose, timeout=timeout)
                 break
 
     if provider is None:
@@ -1134,6 +1138,8 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Generate dashboard.html with score progression chart")
     p.add_argument("--output-dir", default=None,
                    help="Output directory (default: autoresearch-{skill}/ next to target)")
+    p.add_argument("--timeout", type=int, default=180,
+                   help="HTTP timeout in seconds per LLM call (default: 180)")
     p.add_argument("--verbose", action="store_true",
                    help="Verbose logging (full LLM responses)")
     return p
@@ -1163,7 +1169,8 @@ def main() -> None:
 
     # Detect provider
     provider = detect_provider(args.provider, verbose=args.verbose,
-                               model_override=args.model)
+                               model_override=args.model,
+                               timeout=args.timeout)
     _log(f"Using provider: {provider.name()}")
 
     # Output directory
