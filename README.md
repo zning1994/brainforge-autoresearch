@@ -3,6 +3,7 @@
 Autonomous skill prompt optimizer based on Karpathy's autoresearch methodology.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![ClawHub](https://img.shields.io/badge/ClawHub-openclaw--autoresearch-blue)](https://clawhub.ai/zning1994/openclaw-autoresearch)
 
 ## What it does
 
@@ -17,7 +18,7 @@ Based on [Andrej Karpathy's autoresearch](https://github.com/karpathy/autoresear
 npx skills add zning1994/openclaw-autoresearch
 
 # OpenClaw ClawHub
-openclaw skills install autoresearch
+openclaw skills install openclaw-autoresearch
 
 # Standalone
 git clone https://github.com/zning1994/openclaw-autoresearch

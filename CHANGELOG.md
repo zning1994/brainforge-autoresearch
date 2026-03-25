@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.2] - 2026-03-25
+
+### Fixed
+
+- `.gitignore`: removed incorrect entries (`.git`, `.github`), added `autoresearch-*/` and `*.baseline`
+- README: added ClawHub badge and link, fixed install slug to `openclaw-autoresearch`
+
 ## [0.2.1] - 2026-03-25
 
 ### Fixed
@@ -68,6 +75,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Example eval configs: `weekly-report.json`, `search-skill.json`
 - Compatible with `npx skills add` (Vercel Labs skills ecosystem)
 
+[0.2.2]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.2
 [0.2.1]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.1
 [0.2.0]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.0
 [0.1.0]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.1.0
