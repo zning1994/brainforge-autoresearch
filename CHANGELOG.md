@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.1] - 2026-03-25
+
+### Fixed
+
+- ClawHub security flag: changed `requires.env` (all required) to `requires.anyEnv` (any one suffices)
+- Declared optional env vars `OPENAI_BASE_URL` / `OPENAI_API_BASE` in metadata
+
 ## [0.2.0] - 2026-03-25
 
 ### Fixed
@@ -61,5 +68,6 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Example eval configs: `weekly-report.json`, `search-skill.json`
 - Compatible with `npx skills add` (Vercel Labs skills ecosystem)
 
+[0.2.1]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.1
 [0.2.0]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.0
 [0.1.0]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.1.0
