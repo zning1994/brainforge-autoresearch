@@ -48,7 +48,7 @@ class LLMProvider(ABC):
         ...
 
     def _http_post(self, url: str, headers: dict, body: dict,
-                   timeout: int = 60) -> dict:
+                   timeout: int = 180) -> dict:
         """Low-level POST via urllib.  Retries once on timeout/5xx."""
         data = json.dumps(body).encode("utf-8")
         for attempt in range(2):
