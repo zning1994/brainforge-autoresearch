@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.4] - 2026-03-29
+
+### Fixed
+
+- SKILL.md: `pass`/`fail` → `pass_description`/`fail_description` in LLM eval docs and examples (field names didn't match actual API)
+- SKILL.md: `contains`/`not_contains` parameter documented as `value` (string) → `values` (list) to match actual usage
+- SKILL.md: LLM eval table now includes required `type` and `name` fields
+
+### Changed
+
+- SKILL.md self-optimized via autoresearch (2 rounds: MiniMax 48.6%→68.1%, Claude 80.6%→91.7%)
+- Procedure rewritten: added 3-step summary upfront, renamed steps for clarity, added actionable result-review guidance
+- Example section restructured: removed "confirm target" preamble, simplified to "create eval → run → review" flow
+- Added `self-eval.json` for self-optimization (dogfooding eval definition)
+
+### Tested
+
+- Self-optimization: Round 1 (MiniMax M2.7, 15 exp, 3 keep) and Round 2 (Claude, 15 exp, 1 keep) independently discovered same doc bugs
+
 ## [0.2.3] - 2026-03-25
 
 ### Added
@@ -88,6 +107,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Example eval configs: `weekly-report.json`, `search-skill.json`
 - Compatible with `npx skills add` (Vercel Labs skills ecosystem)
 
+[0.2.4]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.4
 [0.2.3]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.3
 [0.2.2]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.2
 [0.2.1]: https://github.com/zning1994/openclaw-autoresearch/releases/tag/v0.2.1

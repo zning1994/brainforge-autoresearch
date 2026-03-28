@@ -6,7 +6,7 @@ description: >-
   "run autoresearch", "tune prompt", "prompt optimization", "skill evaluation",
   "A/B test prompt", "find best prompt", "auto-improve skill".
   Runs automated prompt experiments using the Karpathy autoresearch pattern.
-version: 0.2.3
+version: 0.2.4
 metadata:
   author: zning1994
   openclaw:
@@ -52,6 +52,8 @@ Autonomous prompt optimization for AI agent skills. Runs controlled experiments 
 - Target skill must have a prompt file (SKILL.md, SYSTEM.md, or similar)
 
 ## Procedure
+
+Always follow these steps in order: (1) Create eval.json, (2) Run autoresearch command, (3) Review results and apply best prompt.
 
 ### Step 1: Gather context
 
@@ -127,20 +129,22 @@ Define test inputs and evaluation criteria. Each eval is a binary pass/fail chec
 | `regex` | `pattern` | Pass if regex matches output |
 | `banned_phrases` | `phrases` (list) | Pass if NONE of the phrases appear |
 | `word_count` | `min`, `max` (optional) | Pass if word count is within range |
-| `contains` | `value` | Pass if value appears in output (case-insensitive) |
-| `not_contains` | `value` | Pass if value does NOT appear in output (case-insensitive) |
+| `contains` | `values` (list), optional `match`: `"any"` (default) or `"all"` | Pass if any/all values appear in output (case-insensitive) |
+| `not_contains` | `values` (list) | Pass if NONE of the values appear in output (case-insensitive) |
 
 **LLM eval type:**
 
 | Field | Description |
 |-------|-------------|
+| `type` | Must be `"llm"` |
+| `name` | Unique name for this eval |
 | `question` | What to ask the judge LLM about the output |
-| `pass` | Description of what a passing output looks like |
-| `fail` | Description of what a failing output looks like |
+| `pass_description` | Description of what a passing output looks like |
+| `fail_description` | Description of what a failing output looks like |
 
 See `eval-guide.md` for detailed guidance on writing effective evals.
 
-### Step 3: Run
+### Step 3: Run autoresearch
 
 ```bash
 python autoresearch.py \
@@ -152,7 +156,7 @@ python autoresearch.py \
   --dashboard
 ```
 
-### Step 4: Monitor progress
+### Step 4: Review results and apply changes
 
 The script writes results to `results.tsv` in the working directory. Each row is one experiment:
 
@@ -160,29 +164,21 @@ The script writes results to `results.tsv` in the working directory. Each row is
 experiment_id  parent_id  mutation_description  avg_score  pass_rate  evals_detail  prompt_diff
 ```
 
-Read the file to check progress:
+Find the best performing variant:
 ```bash
-cat results.tsv | head -20
+cat results.tsv | sort -k4 -nr | head -5
 ```
 
-### Step 5: Present results
-
-When the script finishes (or hits `--max-experiments`), report to the user:
-1. **Best variant** — highest avg_score, with the mutation description
-2. **Score improvement** — baseline vs best (e.g., "62% -> 88% pass rate")
-3. **Key mutations that helped** — which changes moved the needle
-4. **Recommended prompt** — the winning prompt text or diff
+Apply the winning prompt to your skill by copying the optimized prompt text to replace the original.
 
 ## Example: optimizing brain-search
 
 ```
 User: brain-search 的搜索结果经常缺少来源链接，帮我优化一下
 
-1. 确认目标:
-   - target: skills/brain-search/SKILL.md
-   - 问题: 输出缺少来源链接
+完整流程:
 
-2. 创建 eval.json:
+1. 创建 eval.json:
    {
      "test_inputs": [
        "search for latest news on OpenAI",
@@ -207,30 +203,24 @@ User: brain-search 的搜索结果经常缺少来源链接，帮我优化一下
        {
          "name": "structured_output",
          "type": "llm",
-         "question": "Is the output well-structured with clear sections (e.g., bullet points, numbered list, or headers)?",
-         "pass": "Output uses clear structure like bullets, numbers, or headers to organize information",
-         "fail": "Output is a wall of text without clear structure"
-       },
-       {
-         "name": "concise",
-         "type": "rule",
-         "rule": "word_count",
-         "min": 80,
-         "max": 400
+         "question": "Is the output well-structured with clear sections?",
+         "pass_description": "Output uses clear structure like bullets or headers",
+         "fail_description": "Output is a wall of text without clear structure"
        }
      ]
    }
 
-3. 运行:
+2. 运行命令:
    python autoresearch.py \
      --target ../workspace/skills/brain-search/SKILL.md \
      --evals eval.json \
      --runs 5 \
      --max-experiments 20
 
-4. 报告结果:
-   "经过 18 轮实验，最佳变体将来源链接出现率从 40% 提升到 95%。
-    关键改动: 在 Procedure 第 2 步加入 '每条结果必须附原始 URL' 的明确指令。"
+3. 查看并应用结果:
+   - 检查 results.tsv 找最高分变体
+   - 查看 mutation_description 了解关键改动
+   - 将最佳 prompt 应用到原始 SKILL.md
 ```
 
 ## Failure handling
