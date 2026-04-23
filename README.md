@@ -1,9 +1,12 @@
-# openclaw-autoresearch
+# brainforge-autoresearch
+
+> **Renamed.** Previously published as `openclaw-autoresearch` on GitHub and `autoresearch` on ClawHub. The old GitHub URL redirects to this repo automatically; the ClawHub skill name is still `autoresearch` for now (rename pending).
 
 Autonomous skill prompt optimizer based on Karpathy's autoresearch methodology.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![ClawHub](https://img.shields.io/badge/ClawHub-openclaw--autoresearch-blue)](https://clawhub.ai/zning1994/openclaw-autoresearch)
+[![ClawHub](https://img.shields.io/badge/ClawHub-autoresearch-blue)](https://clawhub.ai/zning1994/openclaw-autoresearch)
+[![brainforge](https://img.shields.io/badge/brainforge-marketplace-purple)](https://github.com/zning1994/brainforge)
 
 ## What it does
 
@@ -14,15 +17,19 @@ Based on [Andrej Karpathy's autoresearch](https://github.com/karpathy/autoresear
 ## Quick Start
 
 ```bash
-# Universal (npx skills)
-npx skills add zning1994/openclaw-autoresearch
+# Claude Code (via brainforge marketplace)
+/plugin marketplace add zning1994/brainforge
+/plugin install brainforge-autoresearch@brainforge
 
-# OpenClaw ClawHub
-openclaw skills install openclaw-autoresearch
+# Universal (npx skills)
+npx skills add zning1994/brainforge-autoresearch
+
+# OpenClaw ClawHub (skill name is still "autoresearch" until rename)
+openclaw skills install autoresearch
 
 # Standalone
-git clone https://github.com/zning1994/openclaw-autoresearch
-cd openclaw-autoresearch
+git clone https://github.com/zning1994/brainforge-autoresearch
+cd brainforge-autoresearch
 python autoresearch.py --target ./my-skill/SKILL.md --evals eval.json
 ```
 

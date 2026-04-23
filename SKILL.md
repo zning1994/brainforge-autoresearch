@@ -1,5 +1,5 @@
 ---
-name: autoresearch
+name: brainforge-autoresearch
 description: >-
   Use when user wants to optimize, improve, benchmark, or evaluate a skill's prompt.
   Triggers on "optimize skill", "improve skill prompt", "benchmark skill", "eval skill",
@@ -28,7 +28,9 @@ metadata:
       - linux
 ---
 
-# autoresearch
+# brainforge-autoresearch
+
+> Previously published as `autoresearch` / `openclaw-autoresearch`. Renamed for the brainforge marketplace rollout — functionality unchanged.
 
 Autonomous prompt optimization for AI agent skills. Runs controlled experiments to find better prompt variants using the [Karpathy autoresearch pattern](https://github.com/karpathy/autoresearch): generate hypothesis, mutate prompt, evaluate, repeat.
 
