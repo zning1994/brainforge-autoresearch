@@ -1,0 +1,14 @@
+{
+  "name": "brainforge-autoresearch",
+  "version": "0.2.4",
+  "description": "Autonomous prompt optimization for AI agent skills. Runs controlled experiments to find better prompt variants using the Karpathy autoresearch pattern.",
+  "author": {
+    "name": "zning",
+    "email": "zhn038@gmail.com",
+    "url": "https://github.com/zning1994"
+  },
+  "homepage": "https://github.com/zning1994/openclaw-autoresearch",
+  "repository": "https://github.com/zning1994/openclaw-autoresearch",
+  "license": "MIT",
+  "keywords": ["prompt-optimization", "skill-evaluation", "autoresearch", "llm-eval"]
+}

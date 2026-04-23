@@ -9,3 +9,7 @@ __pycache__
 *.log
 .DS_Store
 output/
+
+# Claude Code marketplace scaffolding (not needed by ClawHub)
+.claude-plugin/
+skills/
