@@ -22,7 +22,7 @@ metadata:
     optionalEnv:
       - OPENAI_BASE_URL
       - OPENAI_API_BASE
-    homepage: https://github.com/zning1994/openclaw-autoresearch
+    homepage: https://github.com/zning1994/brainforge-autoresearch
     os:
       - macos
       - linux

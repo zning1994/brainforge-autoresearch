@@ -7,8 +7,8 @@
     "email": "zhn038@gmail.com",
     "url": "https://github.com/zning1994"
   },
-  "homepage": "https://github.com/zning1994/openclaw-autoresearch",
-  "repository": "https://github.com/zning1994/openclaw-autoresearch",
+  "homepage": "https://github.com/zning1994/brainforge-autoresearch",
+  "repository": "https://github.com/zning1994/brainforge-autoresearch",
   "license": "MIT",
   "keywords": ["prompt-optimization", "skill-evaluation", "autoresearch", "llm-eval"]
 }
