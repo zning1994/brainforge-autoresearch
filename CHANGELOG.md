@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.2.5] - 2026-04-23
 
 ### Changed
 
@@ -12,11 +12,12 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - SKILL.md `name` field: `autoresearch` → `brainforge-autoresearch`
 - Updated README, plugin.json, and SKILL.md metadata to point at the new repo URL
 - Added to the [brainforge](https://github.com/zning1994/brainforge) Claude Code plugin marketplace
-- ClawHub skill name remains `autoresearch` until a separate migration
+- Published to ClawHub as `brainforge-autoresearch`; old slug `openclaw-autoresearch` merged in as redirect
 
 ### Compatibility
 
 - GitHub: old URL `https://github.com/zning1994/openclaw-autoresearch` auto-redirects
+- ClawHub: `openclaw skills install openclaw-autoresearch` continues to work via ClawHub slug merge/redirect
 - No behavior changes to the optimizer itself
 
 ## [0.2.4] - 2026-03-29

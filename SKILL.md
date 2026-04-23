@@ -6,7 +6,7 @@ description: >-
   "run autoresearch", "tune prompt", "prompt optimization", "skill evaluation",
   "A/B test prompt", "find best prompt", "auto-improve skill".
   Runs automated prompt experiments using the Karpathy autoresearch pattern.
-version: 0.2.4
+version: 0.2.5
 metadata:
   author: zning1994
   openclaw:
